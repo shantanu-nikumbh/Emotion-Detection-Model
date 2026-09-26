@@ -1,0 +1,20 @@
+# Python
+venv/
+env/
+__pycache__/
+*.pyc
+*.pyo
+
+# Trained model artifacts (regenerate via train_model.py)
+model/*.pkl
+
+# NLTK downloaded data
+nltk_data/
+
+# Environment variables / secrets
+.env
+
+# OS / editor junk
+.DS_Store
+.vscode/
+.idea/

@@ -1,0 +1,36 @@
+.user-input-page {
+  min-height: 100vh;
+  width: 100%;
+
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+
+  padding: 60px 24px;
+
+  box-sizing: border-box;
+
+  background:
+    radial-gradient(
+      circle at 15% 20%,
+      rgba(37, 99, 235, 0.95) 0%,
+      transparent 40%
+    ),
+    radial-gradient(
+      circle at 85% 25%,
+      rgba(124, 58, 237, 0.95) 0%,
+      transparent 40%
+    ),
+    radial-gradient(
+      circle at 70% 90%,
+      rgba(219, 39, 119, 0.95) 0%,
+      transparent 45%
+    ),
+    linear-gradient(
+      135deg,
+      #1d4ed8 0%,
+      #4338ca 45%,
+      #7e22ce 70%,
+      #be185d 100%
+    );
+}

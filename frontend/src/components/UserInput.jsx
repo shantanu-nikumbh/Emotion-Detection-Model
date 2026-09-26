@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import AnalysisResult from "./Analysisresult";
+import "../styles/UserInput.css";
+import '../index.css'
 
 const UserInput = () => {
   const [emotionText, setEmotionText] = useState("");
@@ -14,8 +17,7 @@ const UserInput = () => {
     setResponse(null);
 
     try {
-      // Replace this URL with your backend API
-      const res = await fetch("http://localhost:5000/api/analyze", {
+      const res = await fetch("http://localhost:5000/predict", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -27,7 +29,11 @@ const UserInput = () => {
 
       const data = await res.json();
 
-      setResponse(data);
+      if (!res.ok) {
+        setResponse({ error: data.error || "Something went wrong." });
+      } else {
+        setResponse(data);
+      }
     } catch (error) {
       console.error("Error analyzing emotion:", error);
 
@@ -40,76 +46,64 @@ const UserInput = () => {
   };
 
   return (
-    <div className="user-input">
+    <main className="user-input-page">
+      <section className="user-input-card">
 
-      {/* Heading */}
-      <h1>How are you feeling?</h1>
+        <div className="user-input-header">
+          <span className="user-input-label">EMOTION ANALYSIS</span>
 
-      <p>
-        Tell us what is on your mind. You can describe your feelings,
-        thoughts, or what happened today.
-      </p>
+          <h1 className="user-input-title">
+            How are you feeling?
+          </h1>
 
-      {/* User Input */}
-      <textarea
-        value={emotionText}
-        onChange={(e) => setEmotionText(e.target.value)}
-        placeholder="I have been feeling anxious lately because..."
-        rows="6"
-      />
-
-      {/* Analyze Button */}
-      <button
-        onClick={handleAnalyze}
-        disabled={loading || !emotionText.trim()}
-      >
-        {loading ? "Analyzing..." : "Analyze Emotion"}
-      </button>
-
-      {/* Backend Response */}
-      <div className="analysis-response">
-
-        <h2> Analysis</h2>
-
-        {!response && !loading && (
-          <p>
-            Your emotion analysis will appear here.
+          <p className="user-input-description">
+            Tell us what is on your mind. You can describe your feelings,
+            thoughts, or what happened today.
           </p>
-        )}
+        </div>
 
-        {loading && (
-          <p>
-            Understanding what you're feeling...
-          </p>
-        )}
+        <div className="user-input-form">
+          <label htmlFor="emotion-text" className="user-input-field-label">
+            Share your thoughts
+          </label>
 
-        {response && (
-          <div className="response-content">
-            {response.error ? (
-              <p>{response.error}</p>
-            ) : (
-              <>
-                <p>
-                  <strong>Emotion:</strong>{" "}
-                  {response.emotion}
-                </p>
+          <textarea
+            id="emotion-text"
+            className="user-input-textarea"
+            value={emotionText}
+            onChange={(e) => setEmotionText(e.target.value)}
+            placeholder="I have been feeling anxious lately because..."
+            rows="6"
+          />
 
-                <p>
-                  <strong>Confidence:</strong>{" "}
-                  {response.confidence}%
-                </p>
+          <div className="user-input-action">
+            <span className="user-input-helper">
+              Your thoughts will be analyzed to identify emotional patterns.
+            </span>
 
-                <p>
-                  <strong>Analysis:</strong>{" "}
-                  {response.analysis}
-                </p>
-              </>
-            )}
+            <button
+              className="user-input-button"
+              onClick={handleAnalyze}
+              disabled={loading || !emotionText.trim()}
+            >
+              {loading ? "Analyzing..." : "Analyze Emotion"}
+            </button>
           </div>
-        )}
+        </div>
 
-      </div>
-    </div>
+        <div className="analysis-response">
+          <div className="analysis-response-header">
+            <h2 className="analysis-response-title">Analysis</h2>
+            <span className="analysis-response-indicator"></span>
+          </div>
+
+          <div className="analysis-response-content">
+            <AnalysisResult data={response} loading={loading} />
+          </div>
+        </div>
+
+      </section>
+    </main>
   );
 };
 
